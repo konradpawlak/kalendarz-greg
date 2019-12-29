@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace kalendarz
+{
+    class Program
+    {
+        public struct Data
+        {
+            static public bool Przest(int r)
+            {
+                return (r % 4 == 0 && r % 100 != 0) || r % 400 == 0;
+            }
+
+            static public int Dmax(int m, int r)
+            {
+                return n[Przest(r) ? 1 : 0, m];
+            }
+
+            static public int Ndr(int d, int m, int r)
+            {
+                int p = Przest(r) ? 1 : 0;
+                while (--m > 0)
+                    d += n[p, m];
+                return d;
+            }
+
+            static public int Dtyg(int d, int m, int r)
+            {
+                if (m > 2)
+                    m -= 2;
+                else
+                {
+                    m += 10;
+                    r--;
+                }
+                int w = r / 100;
+                r %= 100;
+                return (d + (13 * m - 1) / 5 + r + r / 4 + w / 4 + 5 * w) % 7;
+            }
+
+            static readonly int[,] n =
+                { {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
+              {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 } };
+
+        }
+        static void Main(string[] args)
+        {
+            Console.Write("Dzien  : ");
+            int d = Convert.ToInt32(Console.ReadLine().Trim());
+            Console.Write("Miesiac: ");
+            int m = Convert.ToInt32(Console.ReadLine().Trim());
+            Console.Write("Rok    : ");
+            int r = Convert.ToInt32(Console.ReadLine().Trim());
+            Console.WriteLine("{0}, {1} dzien roku.", Nazwa[Data.Dtyg(d, m, r)], Data.Ndr(d, m, r));
+            Console.ReadKey();
+        }
+        static string[] Nazwa = {"Niedziela", "Poniedzialek", "Wtorek",
+                                 "Sroda", "Czwartek", "Piatek", "Sobota"};
+    }
+}
